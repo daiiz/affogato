@@ -124,15 +124,15 @@ export default class Affogato {
         this.clearLayerATagsOwn()
       })
 
-      $(window).on('scroll', () => {
-        this.clearLayerATagsOwn()
-      })
-
       this.$layer.on('mouseleave', event => {
         this.hide()
       })
-    })
 
+      $(window).on('scroll', () => {
+        this.rerender()
+      })
+
+    })
   }
 
   setTargetSelector (selector='') {
@@ -141,5 +141,10 @@ export default class Affogato {
 
   setLinkStyle (styles={}) {
     this.linkStyles = styles
+  }
+
+  rerender () {
+    this.clearLayerATagsOwn()
+    this.updateLayer()
   }
 }
