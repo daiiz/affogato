@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "babel src/ --out-dir dist/"
+    "build": "./node_modules/.bin/babel src/ --out-dir dist/ --source-maps inline && npm run build-sample",
+    "build-sample": "./node_modules/.bin/browserify sample/app.js -o sample/bundle.js"
   },
   "repository": {
     "type": "git",
@@ -20,7 +21,8 @@
     "babel-cli": "^6.14.0",
     "babel-polyfill": "^6.13.0",
     "babel-preset-es2015": "^6.14.0",
-    "babel-register": "^6.14.0"
+    "babel-register": "^6.14.0",
+    "browserify": "^14.5.0"
   },
   "bugs": {
     "url": "https://github.com/daiz713/affogato/issues"
