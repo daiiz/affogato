@@ -81,13 +81,10 @@ export default class Affogato {
     }
   }
 
-  createLayer () {
+  createLayer (links=[]) {
     this.$layer = $(`<div class='affogato-layer'></div>`)
     // 数値はパーセント
-    const aTags = [
-      { left: 10, top: 10, width: 20, height: 20, href: '#' },
-      { left: 40, top: 40, width: 30, height: 10, href: '' },
-    ]
+    const aTags = links
     for (let a of aTags) {
       const $div = $(`<div data-href='${a.href}' class='affogato-layer-link'></div>`)
       $div.css({
@@ -110,11 +107,11 @@ export default class Affogato {
     })
   }
 
-  init () {
+  init ({ links }) {
     this.$target.on('mouseenter', event => {
       if ($(event.relatedTarget).hasClass('affogato-layer-a')) return
       if (!this.$layer) {
-        this.createLayer()
+        this.createLayer(links)
       } else {
         this.updateLayer()
       }

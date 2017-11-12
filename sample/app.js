@@ -12,7 +12,12 @@ var sample0 = () => {
       backgroundColor: 'rgb(75, 127, 245)',
       opacity: 0.15
     })
-    a.init()
+    a.init({
+      links: [
+        { left: 10, top: 10, width: 20, height: 20, href: '#' },
+        { left: 60, top: 60, width: 30, height: 10, href: '' },
+      ]
+    })
     affogatoPool[selector] = a
   }
 }
