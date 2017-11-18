@@ -17,6 +17,10 @@ export default class Affogato {
     }
   }
 
+  static clearAll () {
+    $('.affogato-layer').remove()
+  }
+
   get $target () {
     return $(this.target || this.targetSelector)
   }
@@ -46,6 +50,7 @@ export default class Affogato {
     this.layerATags = []
   }
 
+  // XXX: 使用注意
   _hideLayerATagOwn () {
     for (let a of this.layerATags) $(a).hide()
   }
