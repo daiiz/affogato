@@ -7,6 +7,7 @@ export default class Affogato {
     this.$layer = null
     this.layerATags = []
     this.linkStyles = {}
+    this.scrollTimer = null
 
     let stage = document.querySelector('#affogato')
     if (!stage) {
@@ -43,6 +44,10 @@ export default class Affogato {
   clearLayerATagsOwn () {
     for (let a of this.layerATags) $(a).remove()
     this.layerATags = []
+  }
+
+  _hideLayerATagOwn () {
+    for (let a of this.layerATags) $(a).hide()
   }
 
   // 他のAffogatoインスタンスによるaTagを消去する
@@ -107,6 +112,10 @@ export default class Affogato {
     })
   }
 
+  get isLinksVisible () {
+    return this.layerATags.length > 0
+  }
+
   init ({ links }) {
     this.$target.on('mouseenter', event => {
       if ($(event.relatedTarget).hasClass('affogato-layer-a')) return
@@ -126,10 +135,20 @@ export default class Affogato {
       })
 
       $(window).on('scroll', () => {
-        this.rerender()
+        this._hideLayerATagOwn()
+        this.onScrollStop(() => {
+          if (this.isLinksVisible) this.rerender()
+        })
       })
 
     })
+  }
+
+  onScrollStop (callback) {
+    if (this.scrollTimer) window.clearTimeout(this.scrollTimer)
+    this.scrollTimer = window.setTimeout(() => {
+      if (callback) callback()
+    }, 200)
   }
 
   setTargetSelector (selector='') {
