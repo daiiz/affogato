@@ -19,15 +19,7 @@ var sample0 = () => {
       ]
     })
     affogatoPool[selector] = a
-
-    // Affogato.imgLoaded(selector, selector => {
-    //   affogatoPool[selector].showLinks()
-    // })
   }
-
-  Affogato.imgLoaded('#image0', selector => {
-    affogatoPool[selector].showLinks()
-  })
 }
 
 $(function () {
