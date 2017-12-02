@@ -2,6 +2,7 @@ import $ from 'jquery'
 
 export default class Affogato {
   constructor () {
+    this.links = []
     this.target = null
     this.targetSelector = ''
     this.$layer = null
@@ -33,6 +34,7 @@ export default class Affogato {
     return $('.affogato-layer-a')
   }
 
+  // linksを配置する位置を決定する
   updateLayer () {
     this.clearLayerATags()
     const base = this.$target[0]
@@ -71,7 +73,7 @@ export default class Affogato {
       const link = links[i]
       const url = link.dataset.href
       const { left, top, width, height } = link.getBoundingClientRect()
-      
+
       const $a = $(`<a href='${url}' class='affogato-layer-a'></a>`)
       const styleAttrs = Object.keys(this.linkStyles)
       const style = {
@@ -91,7 +93,7 @@ export default class Affogato {
     }
   }
 
-  createLayer (links=[]) {
+  createLayer (links = []) {
     this.$layer = $(`<div class='affogato-layer'></div>`)
     // 数値はパーセント
     const aTags = links
@@ -121,14 +123,24 @@ export default class Affogato {
     return this.layerATags.length > 0
   }
 
-  init ({ links }) {
+  showLayer () {
+    if (!this.$layer) {
+      this.createLayer(this.links)
+    } else {
+      this.updateLayer()
+    }
+  }
+
+  showLinks () {
+    this.$target.trigger('mouseenter')
+  }
+
+  init ({ links, visible } = { links: [] }) {
+    this.links = links
     this.$target.on('mouseenter', event => {
       if ($(event.relatedTarget).hasClass('affogato-layer-a')) return
-      if (!this.$layer) {
-        this.createLayer(links)
-      } else {
-        this.updateLayer()
-      }
+      this.clearLayerATagsOwn()
+      this.showLayer()
 
       this.$target.on('mouseleave', event => {
         if ($(event.relatedTarget).hasClass('affogato-layer-a')) return
@@ -145,7 +157,6 @@ export default class Affogato {
           if (this.isLinksVisible) this.rerender()
         })
       })
-
     })
   }
 
@@ -167,5 +178,16 @@ export default class Affogato {
   rerender () {
     this.clearLayerATagsOwn()
     this.updateLayer()
+  }
+
+  static imgLoaded (selector, callback) {
+    const img = $(selector)[0]
+    requestAnimationFrame(() => {
+      if (!img.width || img.width === 0) {
+        requestAnimationFrame(() => { Affogato.imgLoaded(selector, callback) })
+      } else {
+        callback(selector)
+      }
+    })
   }
 }
